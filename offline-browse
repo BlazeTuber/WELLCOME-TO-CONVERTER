@@ -1,0 +1,11 @@
+#!/bin/bash
+
+rm -rf /tmp/offline-pages
+mkdir -p /tmp/offline-pages
+tar xz -C /tmp/offline-pages -f $1
+
+PORT=$[ ( $RANDOM % 100 ) + 8000]
+bash -c "sleep 3; open http://localhost:${PORT}" &
+pushd /tmp/offline-pages
+python -m OfflinePages.ArchiveHTTPServer $PORT
+popd
